@@ -3,7 +3,12 @@ import json
 
 
 class Calculator:
-    def __init__(self, config: dict | str, services_logic: dict) -> None:
+    def __init__(self, config: dict | str, services_logic: dict, only_params: list=[]) -> None:
+        # Определенные для передачи входные параметры.
+        # Если не задавать, то передавать можно любые параметры
+        # Сортируем сразу, чтобы потом сортировать только переданные
+        # ключи и сравнивать
+        self._only_params = sorted(only_params)
         if isinstance(config, str):
             config = json.loads(config)
         
@@ -16,6 +21,12 @@ class Calculator:
         self.update_services_logic(services_logic)
     
     def update_config(self, **kwargs) -> dict:
+        # Если установлены обязательные параметры и были переданы
+        # какие-то дополнительные, либо не переданы нужные в полном объеме
+        # параметры, тогда ошибка 
+        if self._only_params and sorted(list(kwargs.keys())) != self._only_params:
+            raise Exception(f'You have set only_params, but not gave them. Your only params: {self._only_params}')
+            
         buffer = {}
         # При обновлении конфига вызываем метод обновления для каждого сервиса,
         # передавая все именованные параметры.

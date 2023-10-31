@@ -12,10 +12,10 @@ def memory(distributed: bool, mail_traffic: float):
 
 @used_parameters('agents', 'nodes')
 def cpu(agents: int, nodes: int):
-    res = (0.000169*agents+0,437923)*nodes/3
+    res = (0.000169*agents+0.437923)*nodes/3
     return math.ceil(res * 100) / 100
 
 @used_parameters('agents')
 def storage(agents: int):
-    res = 0.0004*agents+0,3231
-    return math.ceil(res * 100) / 100   
+    res = 0.0004*agents+0.3231
+    return math.ceil(res * 1000) / 1000   

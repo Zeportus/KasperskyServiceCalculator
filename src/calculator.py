@@ -19,10 +19,8 @@ class Calculator:
         buffer = {}
         # При обновлении конфига вызываем метод обновления для каждого сервиса,
         # передавая все именованные параметры.
-        # В этом же цикле заполняем содержимое будущего файла с конфигом
         for service_name, service in self.services.items():
-            service._update_config(**kwargs)
-            buffer[service_name] = service.get_config()
+            buffer[service_name] = service.update_config(**kwargs)
 
         with open('services_config.json', 'w') as f:
             json.dump(buffer, f, indent=4)
